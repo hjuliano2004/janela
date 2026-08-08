@@ -1,4 +1,5 @@
-#define _POSIX_C_SOURCE 199309L
+#define _XOPEN_SOURCE 500
+
 #include "janela/Janela.h"
 #include "string/String.h"
 #include "tempo/Diferenca.h"
@@ -11,43 +12,36 @@
 
 #define s 1000000
 
+void spam();
+
 int main() {
+
+    FPS = (double)s / 60.0;
+
     Janela jnela = janela();
 
     String *frase = string((char *[]){"olá mundo!", NULL});
     println(frase);
 
-    struct timespec ultimoFrame;//guarda o tempo de cada frame
-    clock_gettime(CLOCK_MONOTONIC, &ultimoFrame);
+    //struct timespec ultimoFrame; // guarda o tempo de cada frame
+    //clock_gettime(CLOCK_MONOTONIC, &ultimoFrame);
 
-    bool rodando = true;
-    int sec = 0;
-    double milisec = 0;
+    struct timespec esperando;
+    clock_gettime(CLOCK_MONOTONIC, &esperando);
 
-    
-    XEvent evento;
-    while (rodando) {
-        while (XPending(jnela.display)) {
-            XNextEvent(jnela.display, &evento);
-            if (evento.type == KeyPress) {
-                rodando = false;
-            }
-        }
+    while (eventosJanela(jnela)) {
+        usleep(FPS);
 
-        usleep(s / 60);
+        //clock_gettime(CLOCK_MONOTONIC,  &ultimoFrame); // atualiza o valor do ultimo frame
 
-        milisec += decorrido(ultimoFrame);
-        clock_gettime(CLOCK_MONOTONIC, &ultimoFrame);//atualiza o valor do ultimo frame
+        setInterval(spam, &esperando, 5);
 
-        if (milisec == 1 || milisec > 1) {
-
-            sec++;
-            milisec = -1;
-
-            printf("segundo: %d\n", sec);
-        }
     }
 
     XCloseDisplay(jnela.display);
     return 0;
+}
+
+void spam(){
+    printf("spama a cada 5 segundos\n");
 }

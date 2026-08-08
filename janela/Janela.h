@@ -4,6 +4,7 @@
 
 
 #include <X11/Xlib.h>
+#include <stdbool.h>
 
 
 typedef struct{
@@ -14,7 +15,12 @@ typedef struct{
 }Janela;
 
 Janela janela();
+
+extern double FPS;
+
 void mantem(Janela janela);
+
+bool eventosJanela(Janela janela);
 
 
 
