@@ -13,23 +13,27 @@
 #include <unistd.h>
 
 #define s 1000000
-void spam();
-int main() {
 
-    double FPS = s/60;
+// callback precisa ter a mesma assinatura que o setInterval espera
+void spam(void *arg);
 
-    //setInterval(spam, 3);
+int main(void) {
+    double FPS = s / 60.0;
+
+    // passa NULL como argumento, já que não precisa
+    setInterval(spam, NULL, 3);
+    setTimeOut(spam, 0, 9);
 
     // Loop principal
     while (true) {
-        usleep(FPS);
-        rodar();
+        usleep((useconds_t)FPS);
+        rodar(); // sua função de renderização
     }
-
 
     return 0;
 }
 
-void spam(){
+void spam(void *arg) {
+    (void)arg; // evita warning de argumento não usado
     printf("mensagem a cada 3 segundos\n");
 }

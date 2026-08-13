@@ -6,7 +6,8 @@
 
 typedef struct {
     int id;                       // identificador único
-    void (*callback)(void);
+    void (*callback)(void *arg);
+    void *arg;
     struct timespec inicio;
     double intervalo;
     bool repete;
@@ -24,8 +25,8 @@ extern TimerList *temporizadores;
 
 TimerList *timerList();
 
-SetTimer *setInterval( void (*callback)(void), double intervalo);
-SetTimer *setTimeOut(void (*callback)(void), double intervalo);
+SetTimer *setInterval(void (*callback)(void *arg), void *arg,  double intervalo);
+SetTimer *setTimeOut(void (*callback)(void *arg), void *arg,  double intervalo);
 void clearAllIntervals();
 
 TimerList *addTimer(TimerList *list, SetTimer *setTimer);

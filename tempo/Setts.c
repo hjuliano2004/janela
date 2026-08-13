@@ -9,7 +9,7 @@ TimerList *temporizadores = NULL;
 
 static int nextId = 0;
 
-SetTimer *setInterval(void (*callback)(void), double intervalo) {
+SetTimer *setInterval(void (*callback)(void *arg), void *arg,  double intervalo) {
 
     if (temporizadores == NULL) {
         temporizadores = timerList();
@@ -17,6 +17,7 @@ SetTimer *setInterval(void (*callback)(void), double intervalo) {
 
     SetTimer *setTimer = malloc(sizeof(SetTimer));
     setTimer->callback = callback;
+    setTimer->arg = arg;
     setTimer->intervalo = intervalo;
     setTimer->id = nextId++;
     setTimer->repete = true;
@@ -28,9 +29,9 @@ SetTimer *setInterval(void (*callback)(void), double intervalo) {
     return setTimer;
 }
 
-SetTimer *setTimeOut(void (*callback)(void), double intervalo){
+SetTimer *setTimeOut(void (*callback)(void *arg), void *arg,  double intervalo){
 
-    SetTimer *setTimer = setInterval(callback, intervalo);
+    SetTimer *setTimer = setInterval(callback, arg, intervalo);
 
     setTimer->repete = false;
 
@@ -110,7 +111,7 @@ void rodar() {
 
 void repetidor(SetTimer *timer) {
     if (espera(timer->intervalo, &timer->inicio)) {
-        timer->callback();
+        timer->callback(timer->arg);
         if(!timer->repete){
             clearInterval(timer);
         }
