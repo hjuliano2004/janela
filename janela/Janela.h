@@ -2,25 +2,22 @@
 #ifndef JANELA_H
 #define JANELA_H
 
-
-#include <X11/Xlib.h>
 #include <stdbool.h>
 
 
-typedef struct{
-    Display* display;
-    Window window;
-    Window root;
+/*typedef struct {
+    struct wl_display* display;
+    struct wl_surface* surface;
+    struct xdg_surface* xdg_surface;
+    struct xdg_toplevel* toplevel;
+} Janela;*/
 
-}Janela;
+//Janela janela();
 
-Janela janela();
+//extern double;
 
-extern double FPS;
 
-void mantem(Janela janela);
 
-bool eventosJanela(Janela janela);
 
 
 

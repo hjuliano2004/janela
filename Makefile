@@ -21,10 +21,9 @@ TARGET = programa
 # Regra principal
 all: $(TARGET)
 
-# Linkagem final (com Xlib e XCB)
+# Linkagem final (com Wayland)
 $(TARGET): $(OBJ)
-	$(CXX) $(OBJ) -o $@ -lX11 -lxcb -lXau -lXdmcp
-
+	$(CC) $(OBJ) -o $@ -lwayland-client
 
 # Regras de compilação
 %.o: %.c

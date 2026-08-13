@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 199309L
 #include "Diferenca.h"
+#include "Setts.h"
 #include "../string/String.h"
 #include <stdbool.h>
 #include <time.h>
@@ -33,9 +34,3 @@ bool espera(double espera, struct timespec *inicio) {
     return false;
 }
 
-void setInterval(void (*callback)(void), struct timespec *inicio, double intervalo) {
-
-    if (espera(intervalo, inicio)) {
-        callback();
-    }
-}
