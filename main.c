@@ -1,6 +1,6 @@
 #define _XOPEN_SOURCE 500
 
-#include "janela/Janela.h"
+#include "jnela/Janela.h"
 #include "string/String.h"
 #include "tempo/Diferenca.h"
 #include "tempo/Setts.h"
@@ -11,6 +11,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <poll.h>
 
 #define s 1000000
 
@@ -18,17 +19,41 @@
 void spam(void *arg);
 
 int main(void) {
-    double FPS = s / 60.0;
+
+    Janela *janela = newJanela();
+    sWayland *wayland = newWayland();
+    Nos *nos = newNos(janela, wayland, "janela de teste");
+
+    double FPS = s / 60;
 
     // passa NULL como argumento, já que não precisa
     setInterval(spam, NULL, 3);
     setTimeOut(spam, 0, 9);
 
-    // Loop principal
-    while (true) {
-        usleep((useconds_t)FPS);
-        rodar(); // sua função de renderização
+
+    int fd = wl_display_get_fd(wayland->display);
+    struct pollfd pfd;
+    pfd.fd = fd;
+    pfd.events = POLLIN;
+
+    /* Loop principal: processa eventos pendentes, timers e aguarda eventos com timeout */
+    while (1) {
+        wl_display_dispatch_pending(wayland->display);
+        rodar();
+        wl_display_flush(wayland->display);
+
+        int timeout_ms = 16; /* ~60Hz */
+        int ret = poll(&pfd, 1, timeout_ms);
+        if (ret < 0) break;
+        if (ret > 0) {
+            if (pfd.revents & POLLIN) {
+                if (wl_display_dispatch(wayland->display) == -1) break;
+            }
+        }
     }
+
+
+
 
     return 0;
 }

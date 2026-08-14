@@ -16,21 +16,23 @@ OBJ     := $(SRC:.c=.o)
 OBJ     := $(OBJ:.cpp=.o)
 
 # Nome do executável
-TARGET = programa
+TARGET = run
 
 # Regra principal
 all: $(TARGET)
+	clear
+	./$(TARGET)
 
-# Linkagem final (com Wayland)
+# Linkagem final (com Wayland via pkg-config)
 $(TARGET): $(OBJ)
-	$(CC) $(OBJ) -o $@ -lwayland-client
+	$(CC) $(OBJ) -o $@ $(shell pkg-config --libs wayland-client)
 
 # Regras de compilação
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(shell pkg-config --cflags wayland-client) -c $< -o $@
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(shell pkg-config --cflags wayland-client) -c $< -o $@
 
 # Limpeza
 clean:
