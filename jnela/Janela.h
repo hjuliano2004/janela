@@ -52,7 +52,7 @@ typedef struct{
 
 sWayland *newWayland();
 Janela *newJanela();
-Nos *newNos(Janela *janela, sWayland *wayland, char *titulo[]);
+Nos *newNos(Janela *janela, sWayland *wayland, char *titulo);
 
 
 

@@ -56,7 +56,7 @@ Janela *newJanela() {
     return janela;
 }
 
-Nos *newNos(Janela *janela, sWayland *wayland, char *titulo[]){
+Nos *newNos(Janela *janela, sWayland *wayland, char *titulo){
     Nos *nos = malloc(sizeof(Nos));
 
     nos->janela = janela;

@@ -20,7 +20,7 @@ TARGET = run
 
 # Regra principal
 all: $(TARGET)
-	clear
+	
 	./$(TARGET)
 
 # Linkagem final (com Wayland via pkg-config)

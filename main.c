@@ -17,6 +17,7 @@
 
 // callback precisa ter a mesma assinatura que o setInterval espera
 void spam(void *arg);
+void teste(void *arg);
 
 int main(void) {
 
@@ -24,11 +25,9 @@ int main(void) {
     sWayland *wayland = newWayland();
     Nos *nos = newNos(janela, wayland, "janela de teste");
 
-    double FPS = s / 60;
-
     // passa NULL como argumento, já que não precisa
     setInterval(spam, NULL, 3);
-    setTimeOut(spam, 0, 9);
+    setInterval(teste, NULL, 3);
 
 
     int fd = wl_display_get_fd(wayland->display);
@@ -50,6 +49,9 @@ int main(void) {
                 if (wl_display_dispatch(wayland->display) == -1) break;
             }
         }
+
+
+        calculoFps();
     }
 
 
@@ -62,3 +64,10 @@ void spam(void *arg) {
     (void)arg; // evita warning de argumento não usado
     printf("mensagem a cada 3 segundos\n");
 }
+
+void teste(void *arg){
+    (void)arg;
+
+    printf("FPS: %.0f\n", ciclo->FPS);
+}
+
