@@ -15,6 +15,8 @@
 #include <wayland-client.h>
 
 
+extern struct pollfd *pfd;//responsável pelo polling
+
 typedef struct sWayland {
     struct wl_display *display;
     struct wl_registry *registry;
@@ -50,9 +52,13 @@ typedef struct{
 
 }Nos;
 
+void delJanela(Janela *janela);
+void deslWayland(sWayland *wayland);
 sWayland *newWayland();
 Janela *newJanela();
 Nos *newNos(Janela *janela, sWayland *wayland, char *titulo);
+struct pollfd *gPfd(sWayland *wayland);
+int controleCiclo(sWayland *wayland, double miliseconds);
 
 
 

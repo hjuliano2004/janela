@@ -6,7 +6,7 @@
 #include "Setts.h"
 
 typedef struct {
-    double FPS;
+    double FPS;//guarda o valor real de frames de forma dinamica, não serve pra definir o fps
     struct timespec *ultimoFrame;
 }Ciclo;
 
