@@ -1,7 +1,6 @@
 #define _POSIX_C_SOURCE 199309L
 #include "Diferenca.h"
 #include "Setts.h"
-#include "../string/String.h"
 #include <stdbool.h>
 #include <time.h>
 #include <stdlib.h>

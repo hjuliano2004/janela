@@ -34,13 +34,14 @@ int main(void) {
     /* Loop principal: processa eventos pendentes, timers e aguarda eventos com timeout */
     while (1) {
         wl_display_dispatch_pending(wayland->display);
-        rodar();
+        
         wl_display_flush(wayland->display);
 
-        if(controleCiclo(wayland, fps)){break;}//força o controle dos frames porsegundo 
+        controleCiclo(wayland, fps);
 
 
         calculoFps();
+        rodar();
     }
 
 
