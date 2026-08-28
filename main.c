@@ -12,23 +12,40 @@
 #include <time.h>
 #include <unistd.h>
 
-#define s 1000000
+#define s 1000// representa 1 segundo
 
 // callback precisa ter a mesma assinatura que o setInterval espera
 void spam(void *arg);
+void teste(void *arg);
 
 int main(void) {
-    double FPS = s / 60.0;
+
+    Janela *janela = newJanela();
+    sWayland *wayland = newWayland();
+    Nos *nos = newNos(janela, wayland, "janela de teste");//a declaração explicita da variavel não é obrigatória
+
+    int fps = s/60;
 
     // passa NULL como argumento, já que não precisa
     setInterval(spam, NULL, 3);
-    setTimeOut(spam, 0, 9);
+    setInterval(teste, NULL, 3);
 
-    // Loop principal
-    while (true) {
-        usleep((useconds_t)FPS);
-        rodar(); // sua função de renderização
+
+    /* Loop principal: processa eventos pendentes, timers e aguarda eventos com timeout */
+    while (1) {
+        wl_display_dispatch_pending(wayland->display);
+        
+        wl_display_flush(wayland->display);
+
+        controleCiclo(wayland, fps);
+
+
+        calculoFps();
+        rodar();
     }
+
+
+
 
     return 0;
 }
@@ -37,3 +54,10 @@ void spam(void *arg) {
     (void)arg; // evita warning de argumento não usado
     printf("mensagem a cada 3 segundos\n");
 }
+
+void teste(void *arg){
+    (void)arg;
+
+    printf("FPS: %.0f\n", ciclo->FPS);
+}
+
